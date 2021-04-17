@@ -23,6 +23,7 @@ module.exports = {
 };
 
 function upgrade(request, socket, head) {
+    console.log(sas)
     authenticate(request, function(err, client) {
         if (err) {
             socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n');
@@ -162,6 +163,3 @@ function output_log(ip, code, msg, uuid, group, content, recipient_group, recipi
     log.content = content;
     return JSON.stringify(log);
 }
-process.on('uncaughtException', function(err) {
-    logger.log(`<${chinaTime('YYYY-MM-DD HH:mm:ss')}> err:[${err}]`);
-});
