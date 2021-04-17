@@ -6,6 +6,10 @@ const app = express();
 const router = express.Router();
 const fs = require("fs");
 const url = require('url');
+var path = require("path");
+const {
+    createProxyMiddleware
+} = require('http-proxy-middleware');
 const server = https.createServer({
     cert: fs.readFileSync('./ssl/fullchain.pem'),
     key: fs.readFileSync('./ssl/privkey.pem')
@@ -25,6 +29,7 @@ const logger = new Console({
 app.set('views', './views');
 app.engine('.html', require('ejs').__express);
 app.set('view engine', 'html');
+//app.use(express.static(path.join(__dirname, '../resources')));
 server.on('upgrade', function upgrade(request, socket, head) {
     switch (request.url.toLowerCase()) {
         case "/websocket":
@@ -41,11 +46,11 @@ app.get('/randroca/:action/:class', function(request, response, next) {
 
 });
 app.get('/', function(request, response, next) {
-    response.render('index', {
-        name: 'jonyan'
-    });
-
+    response.render('index');
 });
+app.use(function(request, response, next) {
+    response.send('404 not found', 404);
+})
 process.on('uncaughtException', function(err) {
     logger.error(`<${chinaTime('YYYY-MM-DD HH:mm:ss')}> err:[${err}]`);
 });
