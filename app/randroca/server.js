@@ -10,7 +10,7 @@ function action(action, callback) {
                 info.Column = '10';
                 info.Row = '8';
                 info.Group = '9';
-                info.Vertical_Group = [1, 2, 2, 2, 2, 1]
+                info.Vertical_Group = [2, 2, 2, 2, 2]
                 for (let key in result) {
                     if (result[key].Name != '')
                         info.Info[result[key].Name] = result[key]

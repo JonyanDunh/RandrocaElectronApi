@@ -45,7 +45,7 @@ app.get('/randroca/:action/:class', function(request, response, next) {
     });
 
 });
-app.get('/', function(request, response, next) {
+app.use('/', function(request, response, next) {
     response.render('index');
 });
 app.use(function(request, response, next) {
