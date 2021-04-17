@@ -23,7 +23,6 @@ module.exports = {
 };
 
 function upgrade(request, socket, head) {
-    console.log(sas)
     authenticate(request, function(err, client) {
         if (err) {
             socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n');
@@ -138,7 +137,7 @@ function authenticate(request, callback) {
     var results;
     connection.query(Sql, SqlParams, function(err, result) {
         if (err) {
-            logger.log(`<${chinaTime('YYYY-MM-DD HH:mm:ss')}> err:[${err.message}]`);
+            logger.error(`<${chinaTime('YYYY-MM-DD HH:mm:ss')}> err:[${err.message}]`);
             return;
         }
         result.length == 0 ? callback(true) : callback(false, {

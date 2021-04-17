@@ -1,10 +1,14 @@
 const express = require('express');
-const http = require('http');
+const https = require('https');
 const websocket = require('../websocket/server');
 const app = express();
-const server = http.createServer(app).listen(1234);
-const chinaTime = require('china-time');
 const fs = require("fs");
+const url = require('url');
+const server = https.createServer({
+    cert: fs.readFileSync('./ssl/fullchain.pem'),
+    key: fs.readFileSync('./ssl/privkey.pem')
+}, app).listen(1234);
+const chinaTime = require('china-time');
 const {
     Console
 } = require('console');
@@ -16,6 +20,7 @@ const logger = new Console({
         flags: 'a'
     })
 });
+app.set('views', './views');
 app.engine('.html', require('ejs').__express);
 app.set('view engine', 'html');
 server.on('upgrade', function upgrade(request, socket, head) {
@@ -33,5 +38,5 @@ app.use('/', function(request, response) {
     });
 });
 process.on('uncaughtException', function(err) {
-    logger.log(`<${chinaTime('YYYY-MM-DD HH:mm:ss')}> err:[${err}]`);
+    logger.error(`<${chinaTime('YYYY-MM-DD HH:mm:ss')}> err:[${err}]`);
 });
