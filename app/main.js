@@ -1,7 +1,9 @@
 const express = require('express');
 const https = require('https');
 const websocket = require('../websocket/server');
+const randroca = require('./randroca/server');
 const app = express();
+const router = express.Router();
 const fs = require("fs");
 const url = require('url');
 const server = https.createServer({
@@ -32,10 +34,17 @@ server.on('upgrade', function upgrade(request, socket, head) {
             socket.destroy();
     }
 });
-app.use('/', function(request, response) {
+app.get('/randroca/:action/:class', function(request, response, next) {
+    randroca.action(request.params, function(result) {
+        response.json(result);
+    });
+
+});
+app.get('/', function(request, response, next) {
     response.render('index', {
         name: 'jonyan'
     });
+
 });
 process.on('uncaughtException', function(err) {
     logger.error(`<${chinaTime('YYYY-MM-DD HH:mm:ss')}> err:[${err}]`);

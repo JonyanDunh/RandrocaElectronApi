@@ -2,6 +2,8 @@ const WebSocket = require('ws');
 const url = require('url');
 const fs = require("fs");
 const chinaTime = require('china-time');
+const md5 = require('md5-node');
+const mysql = require('mysql');
 const {
     Console
 } = require('console');
@@ -16,7 +18,6 @@ const logger = new Console({
 const wss = new WebSocket.Server({
     noServer: true
 });
-const md5 = require('md5-node');
 var services = new Object();
 module.exports = {
     upgrade
@@ -123,7 +124,6 @@ function authenticate(request, callback) {
         uuid = request.headers["sec-websocket-protocol"].split(', ')[1];
         key = request.headers["sec-websocket-protocol"].split(', ')[2];
     }
-    var mysql = require('mysql');
     var connection = mysql.createConnection({
         host: 'localhost',
         user: 'websocket',
